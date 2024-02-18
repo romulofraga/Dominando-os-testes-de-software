@@ -24,7 +24,7 @@ namespace Features.Tests
 
             // Assert 
             Assert.False(result);
-            Assert.NotEqual(0, cliente.ValidationResult.Errors.Count);
+            Assert.NotEmpty(cliente.ValidationResult.Errors);
         }
     }
 }

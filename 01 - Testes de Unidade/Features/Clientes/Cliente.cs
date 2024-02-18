@@ -9,7 +9,7 @@ namespace Features.Clientes
         public string Nome { get; private set; }
         public string Sobrenome { get; private set; }
         public DateTime DataNascimento { get; private set; }
-        public DateTime DataCadastro { get; private set; }
+        private DateTime DataCadastro { get; set; }
         public string Email { get; private set; }
         public bool Ativo { get; private set; }
 
@@ -76,7 +76,7 @@ namespace Features.Clientes
                 .NotEqual(Guid.Empty);
         }
 
-        public static bool HaveMinimumAge(DateTime birthDate)
+        private static bool HaveMinimumAge(DateTime birthDate)
         {
             return birthDate <= DateTime.Now.AddYears(-18);
         }
