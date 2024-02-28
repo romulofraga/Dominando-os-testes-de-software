@@ -1,8 +1,8 @@
 ﻿namespace Features.Core
 {
-    public class CpfValidation
+    public static class CpfValidation
     {
-        public bool EhValido(string cpf)
+        public static bool EhValido(string cpf)
         {
             var multiplicador1 = new[] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
             var multiplicador2 = new[] { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
