@@ -1,4 +1,4 @@
-﻿namespace NerdStore.Vendas.Domain;
+﻿namespace NerdStore.Sales.Domain;
 
 public class Roteiro
 {
