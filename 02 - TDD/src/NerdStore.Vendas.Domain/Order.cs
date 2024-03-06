@@ -1,4 +1,6 @@
-﻿namespace NerdStore.Sales.Domain;
+﻿using NerdStore.Core;
+
+namespace NerdStore.Sales.Domain;
 
 public class Order
 {
@@ -16,19 +18,34 @@ public class Order
 
     public void SetDraft() => OrderStatus = OrderStatus.Draft;
 
-    public void AddItem(PedidoItem orderItem)
+    private bool OderItemExists(PedidoItem orderItem) => _orderItems.Any(item => item.ProductId == orderItem.ProductId);
+
+    private void ValidateOrderItemQuantity(PedidoItem orderItem)
     {
-        if (_orderItems.Any(p => p.ProductId == orderItem.ProductId))
+        var itemQuantity = orderItem.Quantity;
+        if (OderItemExists(orderItem))
         {
             var existingItem = _orderItems.FirstOrDefault(p => p.ProductId == orderItem.ProductId);
+            itemQuantity += existingItem.Quantity;
+        }
+        if (itemQuantity > MAX_ITEM_UNITS)
+            throw new DomainException($"Maximum of {MAX_ITEM_UNITS} units per product exceeded");
+    }
+
+    public void AddItem(PedidoItem orderItem)
+    {
+        ValidateOrderItemQuantity(orderItem);
+
+        if (OderItemExists(orderItem))
+        {
+            var existingItem = _orderItems.FirstOrDefault(p => p.ProductId == orderItem.ProductId);
+
             existingItem.AddUnits(orderItem.Quantity);
             orderItem = existingItem;
-
             _orderItems.Remove(existingItem);
         }
 
         _orderItems.Add(orderItem);
-
         CalculateOrderValue();
     }
 
@@ -37,9 +54,20 @@ public class Order
         TotalValue = OrderItems.Sum(i => i.CalculateValue());
     }
 
-    public bool IsValid()
+    private bool IsValid()
     {
         throw new NotImplementedException();
+    }
+
+    public void UpdateItem(PedidoItem orderItem)
+    {
+        ValidateOrderItemExistence(orderItem);
+    }
+
+    private void ValidateOrderItemExistence(PedidoItem orderItem)
+    {
+        if (!OderItemExists(orderItem))
+            throw new DomainException("Item not found in order");
     }
 
     public static class PedidoFactory

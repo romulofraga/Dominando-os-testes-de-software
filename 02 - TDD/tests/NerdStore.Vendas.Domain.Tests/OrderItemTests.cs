@@ -5,7 +5,7 @@ namespace NerdStore.Sales.Domain.Tests;
 public class OrderItemTests
 {
     [Fact(DisplayName = "New Order Item with units below minimum")]
-    [Trait("Category", "OrderItemTests")]
+    [Trait("Category", "Sales - OrderItem")]
     public void OrderItem_NewOrderItem_UnitsBelowMinimum_ShouldThrowException()
     {
         // Arrange & Act & Assert
@@ -13,7 +13,7 @@ public class OrderItemTests
     }
 
     [Fact(DisplayName = "New Order Item with units above maximum")]
-    [Trait("Category", "OrderItemTests")]
+    [Trait("Category", "Sales - OrderItem")]
     public void OrderItem_NewOrderItem_UnitsAboveMaximum_ShouldThrowException()
     {
         // Arrange & Act & Assert
