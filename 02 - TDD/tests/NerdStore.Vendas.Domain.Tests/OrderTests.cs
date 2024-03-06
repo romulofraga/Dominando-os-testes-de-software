@@ -86,4 +86,28 @@ public class OrderTests
         Assert.Equal(1, order.OrderItems.Count);
         Assert.Equal(5, order.OrderItems.FirstOrDefault(p => p.ProductId == productId).Quantity);
     }
+
+    //order total value with different items should be the updated
+    [Fact(DisplayName = "Update Order Item with different items")]
+    [Trait("Category", "Sales - Order")]
+    public void UpdateOrderItem_DifferentItem_ShouldUpdateTotalValue()
+    {
+        // Arrange
+        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var productId = Guid.NewGuid();
+        var orderItem = new PedidoItem(productId, "Produto Teste", 2, 100);
+        order.AddItem(orderItem);
+
+        var productId2 = Guid.NewGuid();
+        var orderItem2 = new PedidoItem(productId2, "Produto Teste 2", 2, 50);
+        order.AddItem(orderItem2);
+
+        var updatedOrderItem = new PedidoItem(productId, "Produto Teste", 5, 100);
+        // Act
+        order.UpdateItem(updatedOrderItem);
+        // Assert
+        Assert.Equal(600, order.TotalValue);
+        Assert.Equal(2, order.OrderItems.Count);
+        Assert.Equal(5, order.OrderItems.FirstOrDefault(p => p.ProductId == productId).Quantity);
+    }
 }

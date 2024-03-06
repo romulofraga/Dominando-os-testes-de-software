@@ -62,6 +62,13 @@ public class Order
     public void UpdateItem(PedidoItem orderItem)
     {
         ValidateOrderItemExistence(orderItem);
+        ValidateOrderItemQuantity(orderItem);
+        var orderItemExistence = _orderItems.FirstOrDefault(p => p.ProductId == orderItem.ProductId);
+
+        _orderItems.Remove(orderItemExistence);
+        _orderItems.Add(orderItem);
+
+        CalculateOrderValue();
     }
 
     private void ValidateOrderItemExistence(PedidoItem orderItem)
