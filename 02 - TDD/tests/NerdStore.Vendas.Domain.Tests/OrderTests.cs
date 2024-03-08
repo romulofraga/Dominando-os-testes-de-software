@@ -4,7 +4,6 @@ namespace NerdStore.Sales.Domain.Tests;
 
 public class OrderTests
 {
-    //create a test with fact and trait
     [Fact(DisplayName = "New Order Item to Empty Order")]
     [Trait("Category", "Sales - Order")]
     public void AddOrderItem_NewOrder_ShouldUpdateValue()
@@ -40,7 +39,6 @@ public class OrderTests
         Assert.Equal(3, order.OrderItems.FirstOrDefault(p => p.ProductId == productId).Quantity);
     }
 
-    //create a test with fact and trait to validate add an existent item abobe the limit
     [Fact(DisplayName = "Add new Order Item with units above maximum")]
     [Trait("Category", "Sales - Order")]
     public void AdicionarItemPedido_UnidadesItemAcimaDoPermitido_DeveRetornarException()
@@ -87,7 +85,6 @@ public class OrderTests
         Assert.Equal(5, order.OrderItems.FirstOrDefault(p => p.ProductId == productId).Quantity);
     }
 
-    //order total value with different items should be the updated
     [Fact(DisplayName = "Update Order Item with different items")]
     [Trait("Category", "Sales - Order")]
     public void UpdateOrderItem_DifferentItem_ShouldUpdateTotalValue()
@@ -109,5 +106,55 @@ public class OrderTests
         Assert.Equal(600, order.TotalValue);
         Assert.Equal(2, order.OrderItems.Count);
         Assert.Equal(5, order.OrderItems.FirstOrDefault(p => p.ProductId == productId).Quantity);
+    }
+    [Fact(DisplayName = "Remove Order Item")]
+    [Trait("Category", "Sales - Order")]
+    public void RemoveItem_OrderItemExists_ShouldRemoveItem()
+    {
+        // Arrange
+        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var productId = Guid.NewGuid();
+        var orderItem = new PedidoItem(productId, "Produto Teste", 2, 100);
+        order.AddItem(orderItem);
+
+        // Act
+        order.RemoveItem(orderItem);
+
+        // Assert
+        Assert.Equal(0, order.OrderItems.Count);
+    }
+
+    [Fact(DisplayName = "Remove Order Item that does not exist")]
+    [Trait("Category", "Sales - Order")]
+    public void RemoveItem_OrderItemDoesNotExist_ShouldThrowException()
+    {
+        // Arrange
+        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var productId = Guid.NewGuid();
+        var orderItem = new PedidoItem(productId, "Produto Teste", 2, 100);
+
+        // Act & Assert
+        Assert.Throws<DomainException>(() => order.RemoveItem(orderItem));
+    }
+
+    [Fact(DisplayName = "Remove Order Item and update total value")]
+    [Trait("Category", "Sales - Order")]
+    public void RemoveItem_OrderItemExists_ShouldUpdateTotalValue()
+    {
+        // Arrange
+        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var productId = Guid.NewGuid();
+        var orderItem = new PedidoItem(productId, "Produto Teste", 2, 100);
+        order.AddItem(orderItem);
+
+        var productId2 = Guid.NewGuid();
+        var orderItem2 = new PedidoItem(productId2, "Produto Teste 2", 2, 50);
+        order.AddItem(orderItem2);
+
+        // Act
+        order.RemoveItem(orderItem);
+
+        // Assert
+        Assert.Equal(100, order.TotalValue);
     }
 }

@@ -77,6 +77,13 @@ public class Order
             throw new DomainException("Item not found in order");
     }
 
+    public void RemoveItem(PedidoItem orderItem)
+    {
+        ValidateOrderItemExistence(orderItem);
+        _orderItems.Remove(orderItem);
+        CalculateOrderValue();
+    }
+
     public static class PedidoFactory
     {
         public static Order NewDraftOrder(Guid customerId)
