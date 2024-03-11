@@ -9,9 +9,9 @@ public class Voucher(
                       int quantity,
                       bool active,
                       bool used,
-                      DateTime? expireDate = null,
-                      decimal? percentage = null,
-                      decimal? discountValue = null)
+                      DateTime? expireDate,
+                      decimal? percentage,
+                      decimal? discountValue)
 {
   public string Code { get; private set; } = code;
   public VoucherType VoucherType { get; private set; } = voucherType;

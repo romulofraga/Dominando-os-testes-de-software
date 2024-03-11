@@ -1,4 +1,5 @@
-﻿using NerdStore.Core;
+﻿using FluentValidation.Results;
+using NerdStore.Core;
 
 namespace NerdStore.Sales.Domain;
 
@@ -9,6 +10,7 @@ public class Order
     public decimal DiscountValue { get; private set; }
     public OrderStatus OrderStatus { get; private set; }
     public bool VoucherUsed { get; private set; }
+    public Voucher Voucher { get; private set; }
 
     private readonly List<PedidoItem> _orderItems;
     public static readonly int MAX_ITEM_UNITS = 15;
@@ -84,6 +86,38 @@ public class Order
         ValidateOrderItemExistence(orderItem);
         _orderItems.Remove(orderItem);
         CalculateOrderValue();
+    }
+
+    public ValidationResult ApplyVoucher(Voucher voucher)
+    {
+        var result = voucher.ValidateVoucher();
+        if (!result.IsValid) return result;
+        Voucher = voucher;
+        VoucherUsed = true;
+
+        CalculateOrderDiscount();
+
+        return result;
+    }
+
+    public void CalculateOrderDiscount()
+    {
+        if (!VoucherUsed) return;
+        decimal discount = 0;
+
+        if (Voucher.VoucherType is VoucherType.Percentage)
+        {
+            if (Voucher.Percentage.HasValue)
+                discount = TotalValue * (Voucher.Percentage.Value / 100);
+        }
+        if (Voucher.VoucherType is VoucherType.Value)
+        {
+            if (Voucher.DiscountValue.HasValue)
+                discount = Voucher.DiscountValue.Value;
+        }
+
+        TotalValue -= discount;
+        DiscountValue = discount;
     }
 
     public static class PedidoFactory

@@ -157,4 +157,74 @@ public class OrderTests
         // Assert
         Assert.Equal(100, order.TotalValue);
     }
+
+    [Fact(DisplayName = "Apply Voucher Valid")]
+    [Trait("Category", "Sales - Order")]
+    public void ApplyVoucher_ValidVoucher_ShouldApplyVoucher()
+    {
+        // Arrange
+        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var voucher = new Voucher("XPTO", VoucherType.Value, 10, true, false, DateTime.Now.AddDays(10), null, 50);
+
+        // Act
+        var result = order.ApplyVoucher(voucher);
+
+        // Assert
+        Assert.True(result.IsValid);
+    }
+
+    [Fact(DisplayName = "Apply Voucher Invalid")]
+    [Trait("Category", "Sales - Order")]
+    public void ApplyVoucher_InvalidVoucher_ShouldReturnError()
+    {
+        // Arrange
+        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var voucher = new Voucher(string.Empty, VoucherType.Value, 0, false, true, DateTime.Now, null, null);
+
+        // Act
+        var result = order.ApplyVoucher(voucher);
+
+        // Assert
+        Assert.False(result.IsValid);
+    }
+
+    [Fact(DisplayName = "Apply Voucher percentage")]
+    [Trait("Category", "Sales - Order")]
+    public void ApplyVoucher_VoucherPercentage_ShouldDiscountTotalValue()
+    {
+        // Arrange
+        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var orderItem = new PedidoItem(Guid.NewGuid(), "Produto Teste", 2, 100);
+        var orderItem2 = new PedidoItem(Guid.NewGuid(), "Produto Teste 2", 1, 200);
+
+        order.AddItem(orderItem);
+        order.AddItem(orderItem2);
+        var voucher = new Voucher("XPTO", VoucherType.Percentage, 10, true, false, DateTime.Now.AddDays(10), 50, null);
+
+        // Act
+        order.ApplyVoucher(voucher);
+
+        // Assert
+        Assert.Equal(200, order.TotalValue);
+    }
+
+    [Fact(DisplayName = "Apply Voucher value")]
+    [Trait("Category", "Sales - Order")]
+    public void ApplyVoucher_VoucherValue_ShouldDiscountTotalValue()
+    {
+        // Arrange
+        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var orderItem = new PedidoItem(Guid.NewGuid(), "Produto Teste", 2, 100);
+        var orderItem2 = new PedidoItem(Guid.NewGuid(), "Produto Teste 2", 1, 200);
+
+        order.AddItem(orderItem);
+        order.AddItem(orderItem2);
+        var voucher = new Voucher("XPTO", VoucherType.Value, 10, true, false, DateTime.Now.AddDays(10), null, 15);
+
+        // Act
+        order.ApplyVoucher(voucher);
+
+        // Assert
+        Assert.Equal(385, order.TotalValue);
+    }
 }

@@ -21,7 +21,7 @@ public class VoucherTests
   public void Voucher_ValidateVoucherTypeValueInvalid_MustBeInvalid()
   {
     // Arrange
-    var voucher = new Voucher("", VoucherType.Value, 0, false, true, DateTime.Now.AddDays(-1), 0);
+    var voucher = new Voucher(string.Empty, VoucherType.Value, 0, false, true, DateTime.Now, null, null);
     var expectedErrors = new List<string>
     {
       VoucherValidation.CodeErrorMessage,
