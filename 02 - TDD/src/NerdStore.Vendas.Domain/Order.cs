@@ -6,13 +6,15 @@ public class Order
 {
     public Guid CustomerId { get; private set; }
     public decimal TotalValue { get; private set; }
+    public decimal DiscountValue { get; private set; }
     public OrderStatus OrderStatus { get; private set; }
+    public bool VoucherUsed { get; private set; }
 
     private readonly List<PedidoItem> _orderItems;
     public static readonly int MAX_ITEM_UNITS = 15;
     public static readonly int MIN_ITEM_UNITS = 1;
 
-    private Order() => _orderItems = new List<PedidoItem>();
+    private Order() => _orderItems = [];
 
     public IReadOnlyCollection<PedidoItem> OrderItems => _orderItems;
 
