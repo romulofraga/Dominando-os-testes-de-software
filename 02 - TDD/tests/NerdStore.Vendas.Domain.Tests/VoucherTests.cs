@@ -1,8 +1,9 @@
+using static NerdStore.Sales.Domain.Voucher;
+
 namespace NerdStore.Sales.Domain.Tests;
 
 public class VoucherTests
 {
-  //test to validate the voucher
   [Fact(DisplayName = "Validate Voucher type value valid")]
   [Trait("Category", "Sales - Voucher")]
   public void Voucher_ValidateVoucherTypeValueValid_MustBeValid()
@@ -13,5 +14,28 @@ public class VoucherTests
     var result = voucher.ValidateVoucher();
     // Assert
     Assert.True(result.IsValid);
+  }
+
+  [Fact(DisplayName = "Validate Voucher type value invalid")]
+  [Trait("Category", "Sales - Voucher")]
+  public void Voucher_ValidateVoucherTypeValueInvalid_MustBeInvalid()
+  {
+    // Arrange
+    var voucher = new Voucher("", VoucherType.Value, 0, false, true, DateTime.Now.AddDays(-1), 0);
+    var expectedErrors = new List<string>
+    {
+      VoucherValidation.CodeErrorMessage,
+      VoucherValidation.ExpireDateErrorMessage,
+      VoucherValidation.QuantityErrorMessage,
+      VoucherValidation.ActiveErrorMessage,
+      VoucherValidation.UsedErrorMessage,
+      VoucherValidation.DiscountValueErrorMessage
+    };
+    // Act
+    var result = voucher.ValidateVoucher();
+    // Assert
+    Assert.False(result.IsValid);
+    Assert.True(result.Errors.Count == expectedErrors.Count);
+    Assert.True(result.Errors.Select(error => error.ErrorMessage).SequenceEqual(expectedErrors));
   }
 }
