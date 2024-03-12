@@ -56,6 +56,7 @@ public class Order
     private void CalculateOrderValue()
     {
         TotalValue = OrderItems.Sum(i => i.CalculateValue());
+        CalculateOrderDiscount();
     }
 
     private bool IsValid()
@@ -117,7 +118,10 @@ public class Order
         }
 
         TotalValue -= discount;
+        if (TotalValue < 0) TotalValue = 0;
         DiscountValue = discount;
+
+
     }
 
     public static class PedidoFactory

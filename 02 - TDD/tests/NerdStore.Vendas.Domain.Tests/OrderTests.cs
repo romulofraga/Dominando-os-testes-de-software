@@ -227,4 +227,45 @@ public class OrderTests
         // Assert
         Assert.Equal(385, order.TotalValue);
     }
+
+    // apply voucher value exceeds total value
+    [Fact(DisplayName = "Apply Voucher value exceeds total value")]
+    [Trait("Category", "Sales - Order")]
+    public void ApplyVoucher_VoucherValueExceedsTotalValue_ShouldReturnZero()
+    {
+        // Arrange
+        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var orderItem = new PedidoItem(Guid.NewGuid(), "Produto Teste", 2, 100);
+        var orderItem2 = new PedidoItem(Guid.NewGuid(), "Produto Teste 2", 1, 200);
+
+        order.AddItem(orderItem);
+        order.AddItem(orderItem2);
+        var voucher = new Voucher("XPTO", VoucherType.Value, 10, true, false, DateTime.Now.AddDays(10), null, 600);
+
+        // Act
+        order.ApplyVoucher(voucher);
+
+        // Assert
+        Assert.Equal(0, order.TotalValue);
+    }
+
+    // recalculate order discount after adding a voucher and a new order item
+    [Fact(DisplayName = "Recalculate order discount after adding a voucher and a new order item")]
+    [Trait("Category", "Sales - Order")]
+    public void RecalculateOrderDiscount_VoucherAndNewItem_ShouldCalculateDiscount()
+    {
+        // Arrange
+        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var orderItem = new PedidoItem(Guid.NewGuid(), "Produto Teste", 1, 100);
+        order.AddItem(orderItem);
+        var voucher = new Voucher("XPTO", VoucherType.Percentage, 50, true, false, DateTime.Now.AddDays(10), 50, 0);
+        order.ApplyVoucher(voucher);
+
+        var orderItem2 = new PedidoItem(Guid.NewGuid(), "Produto Teste 2", 1, 100);
+        // Act
+        order.AddItem(orderItem2);
+
+        // Assert
+        Assert.Equal(100, order.TotalValue);
+    }
 }
