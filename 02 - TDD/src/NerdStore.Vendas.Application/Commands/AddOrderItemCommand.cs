@@ -3,7 +3,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using NerdStore.Core.Messages;
 
-namespace NerdStore.Vendas.Application;
+namespace NerdStore.Vendas.Application.Orders;
 
 public class AddOrderItemCommand : Command
 {

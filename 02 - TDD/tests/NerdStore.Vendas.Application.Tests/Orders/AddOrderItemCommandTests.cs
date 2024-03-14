@@ -1,4 +1,5 @@
-using static NerdStore.Vendas.Application.AddOrderItemCommand;
+using NerdStore.Vendas.Application.Orders;
+using static NerdStore.Vendas.Application.Orders.AddOrderItemCommand;
 
 namespace NerdStore.Vendas.Application.Tests.Orders;
 
