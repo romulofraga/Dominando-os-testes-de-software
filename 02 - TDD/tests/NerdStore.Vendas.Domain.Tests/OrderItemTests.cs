@@ -9,7 +9,7 @@ public class OrderItemTests
     public void OrderItem_NewOrderItem_UnitsBelowMinimum_ShouldThrowException()
     {
         // Arrange & Act & Assert
-        Assert.Throws<DomainException>(() => new PedidoItem(Guid.NewGuid(), "Product Name", Order.MIN_ITEM_UNITS - 1, 100));
+        Assert.Throws<DomainException>(() => new OrderItem(Guid.NewGuid(), "Product Name", Order.MIN_ITEM_UNITS - 1, 100));
     }
 
     [Fact(DisplayName = "New Order Item with units above maximum")]
@@ -17,6 +17,6 @@ public class OrderItemTests
     public void OrderItem_NewOrderItem_UnitsAboveMaximum_ShouldThrowException()
     {
         // Arrange & Act & Assert
-        Assert.Throws<DomainException>(() => new PedidoItem(Guid.NewGuid(), "Product Name", Order.MAX_ITEM_UNITS + 1, 100));
+        Assert.Throws<DomainException>(() => new OrderItem(Guid.NewGuid(), "Product Name", Order.MAX_ITEM_UNITS + 1, 100));
     }
 }

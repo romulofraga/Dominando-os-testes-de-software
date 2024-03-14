@@ -1,14 +1,14 @@
 using NerdStore.Core;
 namespace NerdStore.Sales.Domain;
 
-public class PedidoItem
+public class OrderItem
 {
   public Guid ProductId { get; private set; }
   public string ProductName { get; private set; }
   public int Quantity { get; private set; }
   private decimal UnitPrice { get; set; }
 
-  public PedidoItem(Guid productId, string productName, int quantity, decimal unitPrice)
+  public OrderItem(Guid productId, string productName, int quantity, decimal unitPrice)
   {
     if (quantity > Order.MAX_ITEM_UNITS)
       throw new DomainException($"Maximum of {Order.MAX_ITEM_UNITS} units per product exceeded");

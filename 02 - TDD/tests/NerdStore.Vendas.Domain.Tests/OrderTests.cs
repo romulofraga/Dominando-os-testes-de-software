@@ -11,7 +11,7 @@ public class OrderTests
         // Arrange
         var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
 
-        var orderItem = new PedidoItem(Guid.NewGuid(), "Produto Teste", 2, 100);
+        var orderItem = new OrderItem(Guid.NewGuid(), "Produto Teste", 2, 100);
 
         // Act
         order.AddItem(orderItem);
@@ -27,10 +27,10 @@ public class OrderTests
         // Arrange
         var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
         var productId = Guid.NewGuid();
-        var orderItem = new PedidoItem(productId, "Produto Teste", 2, 100);
+        var orderItem = new OrderItem(productId, "Produto Teste", 2, 100);
         order.AddItem(orderItem);
 
-        var pedidoItem2 = new PedidoItem(productId, "Produto Teste", 1, 100);
+        var pedidoItem2 = new OrderItem(productId, "Produto Teste", 1, 100);
         // Act
         order.AddItem(pedidoItem2);
         // Assert
@@ -46,10 +46,10 @@ public class OrderTests
         // Arrange
         var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
         var productId = Guid.NewGuid();
-        var orderItem = new PedidoItem(productId, "Produto Teste", Order.MAX_ITEM_UNITS, 100);
+        var orderItem = new OrderItem(productId, "Produto Teste", Order.MAX_ITEM_UNITS, 100);
         order.AddItem(orderItem);
 
-        var pedidoItem2 = new PedidoItem(productId, "Produto Teste", 1, 100);
+        var pedidoItem2 = new OrderItem(productId, "Produto Teste", 1, 100);
         // Act & Assert
         Assert.Throws<DomainException>(() => order.AddItem(pedidoItem2));
     }
@@ -60,7 +60,7 @@ public class OrderTests
     {
         // Arrange
         var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
-        var orderItem = new PedidoItem(Guid.NewGuid(), "Product Name", 5, 100);
+        var orderItem = new OrderItem(Guid.NewGuid(), "Product Name", 5, 100);
 
         // Act & Assert
         Assert.Throws<DomainException>(() => order.UpdateItem(orderItem));
@@ -73,10 +73,10 @@ public class OrderTests
         // Arrange
         var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
         var productId = Guid.NewGuid();
-        var orderItem = new PedidoItem(productId, "Produto Teste", 2, 100);
+        var orderItem = new OrderItem(productId, "Produto Teste", 2, 100);
         order.AddItem(orderItem);
 
-        var updatedOrderItem = new PedidoItem(productId, "Produto Teste", 5, 100);
+        var updatedOrderItem = new OrderItem(productId, "Produto Teste", 5, 100);
         // Act
         order.UpdateItem(updatedOrderItem);
         // Assert
@@ -92,14 +92,14 @@ public class OrderTests
         // Arrange
         var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
         var productId = Guid.NewGuid();
-        var orderItem = new PedidoItem(productId, "Produto Teste", 2, 100);
+        var orderItem = new OrderItem(productId, "Produto Teste", 2, 100);
         order.AddItem(orderItem);
 
         var productId2 = Guid.NewGuid();
-        var orderItem2 = new PedidoItem(productId2, "Produto Teste 2", 2, 50);
+        var orderItem2 = new OrderItem(productId2, "Produto Teste 2", 2, 50);
         order.AddItem(orderItem2);
 
-        var updatedOrderItem = new PedidoItem(productId, "Produto Teste", 5, 100);
+        var updatedOrderItem = new OrderItem(productId, "Produto Teste", 5, 100);
         // Act
         order.UpdateItem(updatedOrderItem);
         // Assert
@@ -114,7 +114,7 @@ public class OrderTests
         // Arrange
         var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
         var productId = Guid.NewGuid();
-        var orderItem = new PedidoItem(productId, "Produto Teste", 2, 100);
+        var orderItem = new OrderItem(productId, "Produto Teste", 2, 100);
         order.AddItem(orderItem);
 
         // Act
@@ -131,7 +131,7 @@ public class OrderTests
         // Arrange
         var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
         var productId = Guid.NewGuid();
-        var orderItem = new PedidoItem(productId, "Produto Teste", 2, 100);
+        var orderItem = new OrderItem(productId, "Produto Teste", 2, 100);
 
         // Act & Assert
         Assert.Throws<DomainException>(() => order.RemoveItem(orderItem));
@@ -144,11 +144,11 @@ public class OrderTests
         // Arrange
         var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
         var productId = Guid.NewGuid();
-        var orderItem = new PedidoItem(productId, "Produto Teste", 2, 100);
+        var orderItem = new OrderItem(productId, "Produto Teste", 2, 100);
         order.AddItem(orderItem);
 
         var productId2 = Guid.NewGuid();
-        var orderItem2 = new PedidoItem(productId2, "Produto Teste 2", 2, 50);
+        var orderItem2 = new OrderItem(productId2, "Produto Teste 2", 2, 50);
         order.AddItem(orderItem2);
 
         // Act
@@ -194,8 +194,8 @@ public class OrderTests
     {
         // Arrange
         var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
-        var orderItem = new PedidoItem(Guid.NewGuid(), "Produto Teste", 2, 100);
-        var orderItem2 = new PedidoItem(Guid.NewGuid(), "Produto Teste 2", 1, 200);
+        var orderItem = new OrderItem(Guid.NewGuid(), "Produto Teste", 2, 100);
+        var orderItem2 = new OrderItem(Guid.NewGuid(), "Produto Teste 2", 1, 200);
 
         order.AddItem(orderItem);
         order.AddItem(orderItem2);
@@ -214,8 +214,8 @@ public class OrderTests
     {
         // Arrange
         var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
-        var orderItem = new PedidoItem(Guid.NewGuid(), "Produto Teste", 2, 100);
-        var orderItem2 = new PedidoItem(Guid.NewGuid(), "Produto Teste 2", 1, 200);
+        var orderItem = new OrderItem(Guid.NewGuid(), "Produto Teste", 2, 100);
+        var orderItem2 = new OrderItem(Guid.NewGuid(), "Produto Teste 2", 1, 200);
 
         order.AddItem(orderItem);
         order.AddItem(orderItem2);
@@ -235,8 +235,8 @@ public class OrderTests
     {
         // Arrange
         var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
-        var orderItem = new PedidoItem(Guid.NewGuid(), "Produto Teste", 2, 100);
-        var orderItem2 = new PedidoItem(Guid.NewGuid(), "Produto Teste 2", 1, 200);
+        var orderItem = new OrderItem(Guid.NewGuid(), "Produto Teste", 2, 100);
+        var orderItem2 = new OrderItem(Guid.NewGuid(), "Produto Teste 2", 1, 200);
 
         order.AddItem(orderItem);
         order.AddItem(orderItem2);
@@ -256,12 +256,12 @@ public class OrderTests
     {
         // Arrange
         var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
-        var orderItem = new PedidoItem(Guid.NewGuid(), "Produto Teste", 1, 100);
+        var orderItem = new OrderItem(Guid.NewGuid(), "Produto Teste", 1, 100);
         order.AddItem(orderItem);
         var voucher = new Voucher("XPTO", VoucherType.Percentage, 50, true, false, DateTime.Now.AddDays(10), 50, 0);
         order.ApplyVoucher(voucher);
 
-        var orderItem2 = new PedidoItem(Guid.NewGuid(), "Produto Teste 2", 1, 100);
+        var orderItem2 = new OrderItem(Guid.NewGuid(), "Produto Teste 2", 1, 100);
         // Act
         order.AddItem(orderItem2);
 

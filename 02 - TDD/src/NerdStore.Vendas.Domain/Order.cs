@@ -3,7 +3,7 @@ using NerdStore.Core;
 
 namespace NerdStore.Sales.Domain;
 
-public class Order
+public class Order : Entity
 {
     public Guid CustomerId { get; private set; }
     public decimal TotalValue { get; private set; }
@@ -12,19 +12,19 @@ public class Order
     public bool VoucherUsed { get; private set; }
     public Voucher Voucher { get; private set; }
 
-    private readonly List<PedidoItem> _orderItems;
+    private readonly List<OrderItem> _orderItems;
     public static readonly int MAX_ITEM_UNITS = 15;
     public static readonly int MIN_ITEM_UNITS = 1;
 
     private Order() => _orderItems = [];
 
-    public IReadOnlyCollection<PedidoItem> OrderItems => _orderItems;
+    public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
 
     public void SetDraft() => OrderStatus = OrderStatus.Draft;
 
-    private bool OderItemExists(PedidoItem orderItem) => _orderItems.Any(item => item.ProductId == orderItem.ProductId);
+    private bool OderItemExists(OrderItem orderItem) => _orderItems.Any(item => item.ProductId == orderItem.ProductId);
 
-    private void ValidateOrderItemQuantity(PedidoItem orderItem)
+    private void ValidateOrderItemQuantity(OrderItem orderItem)
     {
         var itemQuantity = orderItem.Quantity;
         if (OderItemExists(orderItem))
@@ -36,7 +36,7 @@ public class Order
             throw new DomainException($"Maximum of {MAX_ITEM_UNITS} units per product exceeded");
     }
 
-    public void AddItem(PedidoItem orderItem)
+    public void AddItem(OrderItem orderItem)
     {
         ValidateOrderItemQuantity(orderItem);
 
@@ -64,7 +64,7 @@ public class Order
         throw new NotImplementedException();
     }
 
-    public void UpdateItem(PedidoItem orderItem)
+    public void UpdateItem(OrderItem orderItem)
     {
         ValidateOrderItemExistence(orderItem);
         ValidateOrderItemQuantity(orderItem);
@@ -76,13 +76,13 @@ public class Order
         CalculateOrderValue();
     }
 
-    private void ValidateOrderItemExistence(PedidoItem orderItem)
+    private void ValidateOrderItemExistence(OrderItem orderItem)
     {
         if (!OderItemExists(orderItem))
             throw new DomainException("Item not found in order");
     }
 
-    public void RemoveItem(PedidoItem orderItem)
+    public void RemoveItem(OrderItem orderItem)
     {
         ValidateOrderItemExistence(orderItem);
         _orderItems.Remove(orderItem);
