@@ -1,3 +1,5 @@
+using static NerdStore.Vendas.Application.AddOrderItemCommand;
+
 namespace NerdStore.Vendas.Application.Tests.Orders;
 
 public class AddOrderItemCommandTests
@@ -13,7 +15,7 @@ public class AddOrderItemCommandTests
     var result = command.IsValid();
 
     // Assert
-    Assert.True(result.IsValid);
+    Assert.True(result);
   }
 
   [Fact(DisplayName = "Add item command invalid")]
@@ -27,7 +29,10 @@ public class AddOrderItemCommandTests
     var result = command.IsValid();
 
     // Assert
-    Assert.False(result.IsValid);
+    Assert.False(result);
+    Assert.Contains(AddOrderItemCommandValidation.InvalidCustomerIdMessage, command.ValidationResult.Errors.Select(e => e.ErrorMessage));
+    Assert.Contains(AddOrderItemCommandValidation.InvalidProductIdMessage, command.ValidationResult.Errors.Select(e => e.ErrorMessage));
+    Assert.Contains(AddOrderItemCommandValidation.EmptyProductNameMessage, command.ValidationResult.Errors.Select(e => e.ErrorMessage));
+    Assert.Contains(AddOrderItemCommandValidation.MinimumQuantityMessage, command.ValidationResult.Errors.Select(e => e.ErrorMessage));
   }
-
 }
