@@ -9,7 +9,7 @@ public class OrderTests
     public void AddOrderItem_NewOrder_ShouldUpdateValue()
     {
         // Arrange
-        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var order = Order.OrderFactory.NewDraftOrder(Guid.NewGuid());
 
         var orderItem = new OrderItem(Guid.NewGuid(), "Produto Teste", 2, 100);
 
@@ -25,7 +25,7 @@ public class OrderTests
     public void AdicionarItemPedido_ItemExistente_DeveIncrementarUnidadeSomarValores()
     {
         // Arrange
-        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var order = Order.OrderFactory.NewDraftOrder(Guid.NewGuid());
         var productId = Guid.NewGuid();
         var orderItem = new OrderItem(productId, "Produto Teste", 2, 100);
         order.AddItem(orderItem);
@@ -44,7 +44,7 @@ public class OrderTests
     public void AdicionarItemPedido_UnidadesItemAcimaDoPermitido_DeveRetornarException()
     {
         // Arrange
-        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var order = Order.OrderFactory.NewDraftOrder(Guid.NewGuid());
         var productId = Guid.NewGuid();
         var orderItem = new OrderItem(productId, "Produto Teste", Order.MAX_ITEM_UNITS, 100);
         order.AddItem(orderItem);
@@ -59,7 +59,7 @@ public class OrderTests
     public void UpdateOrderItem_InexistentItem_ShouldThrowException()
     {
         // Arrange
-        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var order = Order.OrderFactory.NewDraftOrder(Guid.NewGuid());
         var orderItem = new OrderItem(Guid.NewGuid(), "Product Name", 5, 100);
 
         // Act & Assert
@@ -71,7 +71,7 @@ public class OrderTests
     public void UpdateOrderItem_ValidItem_ShouldUpdateQuantity()
     {
         // Arrange
-        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var order = Order.OrderFactory.NewDraftOrder(Guid.NewGuid());
         var productId = Guid.NewGuid();
         var orderItem = new OrderItem(productId, "Produto Teste", 2, 100);
         order.AddItem(orderItem);
@@ -90,7 +90,7 @@ public class OrderTests
     public void UpdateOrderItem_DifferentItem_ShouldUpdateTotalValue()
     {
         // Arrange
-        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var order = Order.OrderFactory.NewDraftOrder(Guid.NewGuid());
         var productId = Guid.NewGuid();
         var orderItem = new OrderItem(productId, "Produto Teste", 2, 100);
         order.AddItem(orderItem);
@@ -112,7 +112,7 @@ public class OrderTests
     public void RemoveItem_OrderItemExists_ShouldRemoveItem()
     {
         // Arrange
-        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var order = Order.OrderFactory.NewDraftOrder(Guid.NewGuid());
         var productId = Guid.NewGuid();
         var orderItem = new OrderItem(productId, "Produto Teste", 2, 100);
         order.AddItem(orderItem);
@@ -129,7 +129,7 @@ public class OrderTests
     public void RemoveItem_OrderItemDoesNotExist_ShouldThrowException()
     {
         // Arrange
-        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var order = Order.OrderFactory.NewDraftOrder(Guid.NewGuid());
         var productId = Guid.NewGuid();
         var orderItem = new OrderItem(productId, "Produto Teste", 2, 100);
 
@@ -142,7 +142,7 @@ public class OrderTests
     public void RemoveItem_OrderItemExists_ShouldUpdateTotalValue()
     {
         // Arrange
-        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var order = Order.OrderFactory.NewDraftOrder(Guid.NewGuid());
         var productId = Guid.NewGuid();
         var orderItem = new OrderItem(productId, "Produto Teste", 2, 100);
         order.AddItem(orderItem);
@@ -163,7 +163,7 @@ public class OrderTests
     public void ApplyVoucher_ValidVoucher_ShouldApplyVoucher()
     {
         // Arrange
-        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var order = Order.OrderFactory.NewDraftOrder(Guid.NewGuid());
         var voucher = new Voucher("XPTO", VoucherType.Value, 10, true, false, DateTime.Now.AddDays(10), null, 50);
 
         // Act
@@ -178,7 +178,7 @@ public class OrderTests
     public void ApplyVoucher_InvalidVoucher_ShouldReturnError()
     {
         // Arrange
-        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var order = Order.OrderFactory.NewDraftOrder(Guid.NewGuid());
         var voucher = new Voucher(string.Empty, VoucherType.Value, 0, false, true, DateTime.Now, null, null);
 
         // Act
@@ -193,7 +193,7 @@ public class OrderTests
     public void ApplyVoucher_VoucherPercentage_ShouldDiscountTotalValue()
     {
         // Arrange
-        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var order = Order.OrderFactory.NewDraftOrder(Guid.NewGuid());
         var orderItem = new OrderItem(Guid.NewGuid(), "Produto Teste", 2, 100);
         var orderItem2 = new OrderItem(Guid.NewGuid(), "Produto Teste 2", 1, 200);
 
@@ -213,7 +213,7 @@ public class OrderTests
     public void ApplyVoucher_VoucherValue_ShouldDiscountTotalValue()
     {
         // Arrange
-        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var order = Order.OrderFactory.NewDraftOrder(Guid.NewGuid());
         var orderItem = new OrderItem(Guid.NewGuid(), "Produto Teste", 2, 100);
         var orderItem2 = new OrderItem(Guid.NewGuid(), "Produto Teste 2", 1, 200);
 
@@ -234,7 +234,7 @@ public class OrderTests
     public void ApplyVoucher_VoucherValueExceedsTotalValue_ShouldReturnZero()
     {
         // Arrange
-        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var order = Order.OrderFactory.NewDraftOrder(Guid.NewGuid());
         var orderItem = new OrderItem(Guid.NewGuid(), "Produto Teste", 2, 100);
         var orderItem2 = new OrderItem(Guid.NewGuid(), "Produto Teste 2", 1, 200);
 
@@ -255,7 +255,7 @@ public class OrderTests
     public void RecalculateOrderDiscount_VoucherAndNewItem_ShouldCalculateDiscount()
     {
         // Arrange
-        var order = Order.PedidoFactory.NewDraftOrder(Guid.NewGuid());
+        var order = Order.OrderFactory.NewDraftOrder(Guid.NewGuid());
         var orderItem = new OrderItem(Guid.NewGuid(), "Produto Teste", 1, 100);
         order.AddItem(orderItem);
         var voucher = new Voucher("XPTO", VoucherType.Percentage, 50, true, false, DateTime.Now.AddDays(10), 50, 0);

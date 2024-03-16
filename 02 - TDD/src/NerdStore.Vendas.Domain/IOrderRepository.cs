@@ -1,8 +1,11 @@
-﻿using NerdStore.Sales.Domain;
+﻿using NerdStore.Core;
+using NerdStore.Sales.Domain;
 
 namespace NerdStore.Vendas.Domain;
 
-public interface IOrderRepository
+public interface IOrderRepository : IRepository<Order>
 {
-  void Add(Order order);
+  void AddItem(OrderItem orderItem);
+  Task<Order> GetDraftOrderByClientId(Guid clientId);
+  void UpdateItem(OrderItem orderItem);
 }

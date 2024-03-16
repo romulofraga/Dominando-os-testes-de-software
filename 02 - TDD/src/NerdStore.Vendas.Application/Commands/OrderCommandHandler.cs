@@ -1,5 +1,6 @@
 ﻿
 using MediatR;
+using NerdStore.Core;
 using NerdStore.Sales.Domain;
 using NerdStore.Vendas.Domain;
 
@@ -16,15 +17,50 @@ public class OrderCommandHandler : IRequestHandler<AddOrderItemCommand, bool>
     _mediator = mediator;
   }
 
-  public Task<bool> Handle(AddOrderItemCommand message, CancellationToken cancellationToken)
+  public async Task<bool> Handle(AddOrderItemCommand message, CancellationToken cancellationToken)
   {
+    if(!ValidateCommand(message)) return false;
+
+    var order = await _pedidoRepository.GetDraftOrderByClientId(message.CustomerId);
     var orderItem = new OrderItem(message.ProductId, message.Name, message.Quantity, message.UnityValue);
-    var order = Order.PedidoFactory.NewDraftOrder(message.CustomerId);
 
-    order.AddItem(orderItem);
+    if (order is null)
+    {
+      order = Order.OrderFactory.NewDraftOrder(message.CustomerId);
+      order.AddItem(orderItem);
+      _pedidoRepository.Add(order);
+    }
+    else
+    {
+      var existingOrderItem = order.OrderItemExists(orderItem);
+      order.AddItem(orderItem);
 
-    _pedidoRepository.Add(order);
-    _mediator.Publish(new OrderItemAddedEvent(order.CustomerId, order.Id, message.ProductId, message.Name, message.Quantity, message.UnityValue), cancellationToken);
-    return Task.FromResult(true);
+      if (!existingOrderItem)
+      {
+        _pedidoRepository.AddItem(orderItem);
+      }
+      else
+      {
+        _pedidoRepository.UpdateItem(order.OrderItems.FirstOrDefault(p => p.ProductId == orderItem.ProductId));
+      }
+      _pedidoRepository.Update(order);
+    }
+
+    order.AddEvent(new OrderItemAddedEvent(order.CustomerId, order.Id, message.ProductId, message.Name, message.Quantity, message.UnityValue));
+
+    return await _pedidoRepository.UnitOfWork.Commit();
+  }
+
+  private bool ValidateCommand(AddOrderItemCommand message)
+  {
+    if (!message.IsValid())
+    {
+      foreach (var error in message.ValidationResult.Errors)
+      {
+        _mediator.Publish(new DomainNotification(message.MessageType, error.ErrorMessage));
+      }
+      return message.IsValid();
+    }
+    return message.IsValid();
   }
 }
