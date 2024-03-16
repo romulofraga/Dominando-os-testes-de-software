@@ -3,7 +3,7 @@ using NerdStore.Core;
 
 namespace NerdStore.Sales.Domain;
 
-public class Order : Entity
+public class Order : Entity, IAggregateRoot
 {
     public Guid CustomerId { get; private set; }
     public decimal TotalValue { get; private set; }
@@ -22,12 +22,12 @@ public class Order : Entity
 
     public void SetDraft() => OrderStatus = OrderStatus.Draft;
 
-    private bool OderItemExists(OrderItem orderItem) => _orderItems.Any(item => item.ProductId == orderItem.ProductId);
+    public bool OrderItemExists(OrderItem orderItem) => _orderItems.Any(item => item.ProductId == orderItem.ProductId);
 
     private void ValidateOrderItemQuantity(OrderItem orderItem)
     {
         var itemQuantity = orderItem.Quantity;
-        if (OderItemExists(orderItem))
+        if (OrderItemExists(orderItem))
         {
             var existingItem = _orderItems.FirstOrDefault(p => p.ProductId == orderItem.ProductId);
             itemQuantity += existingItem.Quantity;
@@ -40,7 +40,7 @@ public class Order : Entity
     {
         ValidateOrderItemQuantity(orderItem);
 
-        if (OderItemExists(orderItem))
+        if (OrderItemExists(orderItem))
         {
             var existingItem = _orderItems.FirstOrDefault(p => p.ProductId == orderItem.ProductId);
 
@@ -78,7 +78,7 @@ public class Order : Entity
 
     private void ValidateOrderItemExistence(OrderItem orderItem)
     {
-        if (!OderItemExists(orderItem))
+        if (!OrderItemExists(orderItem))
             throw new DomainException("Item not found in order");
     }
 
@@ -124,7 +124,7 @@ public class Order : Entity
 
     }
 
-    public static class PedidoFactory
+    public static class OrderFactory
     {
         public static Order NewDraftOrder(Guid customerId)
         {

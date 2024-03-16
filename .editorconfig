@@ -1,0 +1,158 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+[*]
+indent_size = 2
+indent_style = space
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = false
+insert_final_newline = false
+
+# ReSharper properties
+resharper_csharp_naming_rule.private_constants = AaBb, AA_BB
+resharper_csharp_wrap_after_declaration_lpar = true
+resharper_csharp_wrap_after_invocation_lpar = true
+resharper_csharp_wrap_arguments_style = chop_if_long
+resharper_csharp_wrap_before_first_type_parameter_constraint = true
+resharper_csharp_wrap_extends_list_style = chop_if_long
+resharper_csharp_wrap_parameters_style = chop_if_long
+resharper_enforce_line_ending_style = true
+resharper_keep_existing_declaration_parens_arrangement = false
+resharper_keep_existing_embedded_arrangement = false
+resharper_keep_existing_expr_member_arrangement = false
+resharper_keep_existing_property_patterns_arrangement = false
+resharper_keep_existing_switch_expression_arrangement = false
+resharper_nested_ternary_style = expanded
+resharper_place_attribute_on_same_line = false
+resharper_place_linq_into_on_new_line = false
+resharper_place_simple_enum_on_single_line = true
+resharper_place_simple_method_on_single_line = true
+resharper_place_simple_switch_expression_on_single_line = true
+resharper_wrap_array_initializer_style = chop_if_long
+resharper_wrap_before_linq_expression = true
+resharper_wrap_chained_binary_expressions = chop_if_long
+resharper_wrap_chained_binary_patterns = chop_if_long
+resharper_wrap_chained_method_calls = chop_if_long
+resharper_wrap_enum_declaration = chop_if_long
+
+[*.cs]
+indent_size = 4
+
+# These are related to obsolete params
+dotnet_diagnostic.CS0618.severity = none
+dotnet_diagnostic.CS0612.severity = none
+
+# Newline settings
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+csharp_new_line_before_members_in_object_initializers = true
+csharp_new_line_before_members_in_anonymous_types = true
+csharp_new_line_between_query_expression_clauses = true
+
+# Indentation preferences
+csharp_indent_block_contents = true
+csharp_indent_braces = false
+csharp_indent_case_contents = true
+csharp_indent_case_contents_when_block = true
+csharp_indent_switch_labels = true
+csharp_indent_labels = flush_left
+
+# Whitespace options
+csharp_style_allow_embedded_statements_on_same_line_experimental = false
+csharp_style_allow_blank_lines_between_consecutive_braces_experimental = false
+csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = false
+
+# Prefer "var" everywhere
+dotnet_diagnostic.IDE0007.severity = error
+csharp_style_var_for_built_in_types = true:error
+csharp_style_var_when_type_is_apparent = true:error
+csharp_style_var_elsewhere = true:error
+
+# Prefer method-like constructs to have a block body
+csharp_style_expression_bodied_methods = false:none
+csharp_style_expression_bodied_constructors = false:none
+csharp_style_expression_bodied_operators = false:none
+
+# Prefer property-like constructs to have an expression-body
+csharp_style_expression_bodied_properties = true:error
+csharp_style_expression_bodied_indexers = true:error
+csharp_style_expression_bodied_accessors = true:error
+
+# Suggest more modern language features when available
+csharp_style_pattern_matching_over_is_with_cast_check = true:error
+csharp_style_pattern_matching_over_as_with_null_check = true:error
+csharp_style_inlined_variable_declaration = true:suggestion
+csharp_style_throw_expression = true:error
+csharp_style_conditional_delegate_call = true:suggestion
+
+# Spacing
+csharp_space_after_cast = false
+csharp_space_after_colon_in_inheritance_clause = true
+csharp_space_after_comma = true
+csharp_space_after_dot = false
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_after_semicolon_in_for_statement = true
+csharp_space_around_binary_operators = before_and_after
+csharp_space_around_declaration_statements = do_not_ignore
+csharp_space_before_colon_in_inheritance_clause = true
+csharp_space_before_comma = false
+csharp_space_before_dot = false
+csharp_space_before_open_square_brackets = false
+csharp_space_before_semicolon_in_for_statement = false
+csharp_space_between_empty_square_brackets = false
+csharp_space_between_method_call_empty_parameter_list_parentheses = false
+csharp_space_between_method_call_name_and_opening_parenthesis = false
+csharp_space_between_method_call_parameter_list_parentheses = false
+csharp_space_between_method_declaration_empty_parameter_list_parentheses = false
+csharp_space_between_method_declaration_name_and_open_parenthesis = false
+csharp_space_between_method_declaration_parameter_list_parentheses = false
+csharp_space_between_parentheses = false
+csharp_space_between_square_brackets = false
+
+# Blocks are allowed
+csharp_prefer_braces = true:silent
+csharp_preserve_single_line_blocks = true
+csharp_preserve_single_line_statements = true
+
+[*.fs]
+max_line_length = 160
+fsharp_semicolon_at_end_of_line = false
+fsharp_space_before_parameter = true
+fsharp_space_before_lowercase_invocation = true
+fsharp_space_before_uppercase_invocation = false
+fsharp_space_before_class_constructor = false
+fsharp_space_before_member = false
+fsharp_space_before_colon = false
+fsharp_space_after_comma = true
+fsharp_space_before_semicolon = false
+fsharp_space_after_semicolon = true
+fsharp_indent_on_try_with = false
+fsharp_space_around_delimiter = true
+fsharp_max_if_then_else_short_width = 40
+fsharp_max_infix_operator_expression = 50
+fsharp_max_record_width = 40
+fsharp_max_record_number_of_items = 1
+fsharp_record_multiline_formatter = character_width
+fsharp_max_array_or_list_width = 40
+fsharp_max_array_or_list_number_of_items = 1
+fsharp_array_or_list_multiline_formatter = character_width
+fsharp_max_value_binding_width = 40
+fsharp_max_function_binding_width = 40
+fsharp_max_dot_get_expression_width = 50
+fsharp_multiline_block_brackets_on_same_column = true
+fsharp_newline_between_type_definition_and_members = false
+fsharp_keep_if_then_in_same_line = false
+fsharp_max_elmish_width = 40
+fsharp_single_argument_web_mode = false
+fsharp_align_function_signature_to_indentation = false
+fsharp_alternative_long_member_definitions = false
+fsharp_multi_line_lambda_closing_newline = false
+fsharp_disable_elmish_syntax = false
+fsharp_keep_indent_in_branch = false
+fsharp_blank_lines_around_nested_multiline_expressions = true
+fsharp_strict_mode = false
